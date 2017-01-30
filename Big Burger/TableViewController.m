@@ -104,7 +104,6 @@
 
 - (void)bindDatas {
     
-    NSLog(@"refreshingggg");
     
     
     NSDictionary *attrsDictionary = [NSDictionary dictionaryWithObject:[UIColor whiteColor]
@@ -124,11 +123,21 @@
     
 }
 
+- (void)hideToolBar {
+    
+    [self.navigationController setToolbarHidden:YES animated:YES];
+    
+}
+
 - (void)beginRequest {
     
     NSString* urlString = @"https://bigburger.useradgents.com/catalog";
     
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    
     [AsyncConnection sendAsyncRequestWithUrl:urlString completitionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         
         if(self.refreshControl != nil && self.refreshControl.isRefreshing == TRUE)
         {
@@ -161,7 +170,7 @@
             
             //Retrieve the existants items from the persistant store.
             NSArray* existantsRefs = [self existantsRefs];
-            NSLog(@"existantsRefs: %@", existantsRefs);
+
             
             for (NSDictionary* dict in itemsArray) {
                 
@@ -195,6 +204,24 @@
                 }
                 
             }
+            
+        }
+        else {
+            
+            UILabel* errorLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, [self.view bounds].size.width, 42)];
+            errorLabel.textAlignment = NSTextAlignmentCenter;
+            errorLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+            
+            errorLabel.text = @"Cannot connect to the host";
+
+            [self.navigationController.toolbar addSubview:errorLabel];
+            
+            
+            
+            
+            
+            [self.navigationController setToolbarHidden:NO animated:YES];
+            [self performSelector:@selector(hideToolBar) withObject:nil afterDelay:2.];
             
         }
         

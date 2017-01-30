@@ -48,7 +48,6 @@
 
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator:(NSString*)name {
     
-    NSLog(@"NSTemporaryDirectory() : %@", [[self applicationDocumentsDirectory] stringByAppendingPathComponent:name]);
     
     NSURL *storeUrl = [NSURL fileURLWithPath:[[self applicationDocumentsDirectory] stringByAppendingPathComponent:name]];
     

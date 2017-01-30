@@ -28,7 +28,7 @@
     _myResponse = response;
     
     
-    if (code == 500) {
+    if (code != 200) {
         
         NSMutableDictionary* details = [NSMutableDictionary dictionary];
         [details setValue:@"Internal Server Error" forKey:NSLocalizedDescriptionKey];
@@ -37,6 +37,7 @@
         _myCompblock(nil, nil, customError);
 
     }
+    
 
     
 }
